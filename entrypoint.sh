@@ -1,15 +1,11 @@
 #!/bin/bash
-IP=$(curl -s ifconfig.me)
 
-echo "========================================"
-echo "SSH Server activat cu succes!"
-echo "----------------------------------------"
-echo "IP       : $IP"
-echo "Port     : 2222"
-echo "User     : root"
-echo "Parola   : rudyMaFut4123"
-echo "----------------------------------------"
-echo "Te poți conecta: ssh root@$IP -p 2222"
-echo "========================================"
+/usr/sbin/sshd
 
-/usr/sbin/sshd -D
+vncserver -localhost no -SecurityTypes None -geometry 1024x768 --I-KNOW-THIS-IS-INSECURE
+
+openssl req -new -subj "/C=JP" -x509 -days 365 -nodes -out /self.pem -keyout /self.pem
+
+websockify -D --web=/usr/share/novnc/ --cert=/self.pem 6080 localhost:5901
+
+tail -f /dev/null
